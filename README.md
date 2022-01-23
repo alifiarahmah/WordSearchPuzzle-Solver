@@ -1,5 +1,11 @@
 # Tugas Kecil 1 IF2211 Strategi Algoritma
 
-Made by: Alifia Rahmah (13520122)
+Dibuat oleh: Alifia Rahmah (13520122)
 
-Implementation of brute-force algorithm for word search puzzle solver written in C++.
+## Deskripsi
+Implementasi *brute-force algorithm* dalam penyelesaian word-search puzzle.
+
+## Requirements
+1. C++11
+
+## Cara Eksekusi
