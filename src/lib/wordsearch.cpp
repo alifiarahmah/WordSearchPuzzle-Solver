@@ -1,8 +1,10 @@
+/* wordsearch.cpp */
+/* Mencari semua kata dari daftar kata dalam matriks dengan algoritma brute-force */
+
 #include <iostream>
 #include <vector>
 #include <string>
 #include <chrono>
-
 using namespace std;
 
 // ke atas
@@ -218,16 +220,20 @@ void strSearch(vector<vector<char>> *m, vector<vector<short int>> *mcolor, strin
 							direction = 1; // atas
 							strMatch(m, &coordlist, i-1, j, &lettercount, l, direction, &found);
 						}
+						comparison++;
 						if (j < m->at(i).size()-1){
 							if (m->at(i-1).at(j+1) == l->at(1)){
 								direction = 2; // kanan atas
 								strMatch(m, &coordlist, i-1, j+1, &lettercount, l, direction, &found);
 							}
+							comparison++;
 						}
 						if (j > 0){
 							if (m->at(i-1).at(j-1) == l->at(1)){
 								direction = 8; // kiri atas
 								strMatch(m, &coordlist, i-1, j-1, &lettercount, l, direction, &found);
+							} else {
+								comparison++;
 							}
 						}
 					}
@@ -235,17 +241,23 @@ void strSearch(vector<vector<char>> *m, vector<vector<short int>> *mcolor, strin
 						if (m->at(i+1).at(j) == l->at(1)){
 							direction = 5; // bawah
 							strMatch(m, &coordlist, i+1, j, &lettercount, l, direction, &found);
+						} else {
+							comparison++;
 						}
 						if (j < m->at(i).size()-1){
 							if (m->at(i+1).at(j+1) == l->at(1)){
 								direction = 4; // kanan bawah
 								strMatch(m, &coordlist, i+1, j+1, &lettercount, l, direction, &found);
+							} else {
+								comparison++;
 							}
 						}
 						if (j > 0){
 							if (m->at(i+1).at(j-1) == l->at(1)){
 								direction = 6; // kiri bawah
 								strMatch(m, &coordlist, i+1, j-1, &lettercount, l, direction, &found);
+							} else {
+								comparison++;
 							}
 						}
 					} 
@@ -253,19 +265,24 @@ void strSearch(vector<vector<char>> *m, vector<vector<short int>> *mcolor, strin
 						if (m->at(i).at(j-1) == l->at(1)){
 							direction = 7; // kiri
 							strMatch(m, &coordlist, i, j-1, &lettercount, l, direction, &found);
+						} else {
+							comparison++;
 						}
 					} 
 					if (j < m->at(i).size()-1){
 						if (m->at(i).at(j+1) == l->at(1)){
 							direction = 3; // kanan
 							strMatch(m, &coordlist, i, j+1, &lettercount, l, direction, &found);
+						} else {
+							comparison++;
 						}
 					}
 				}
 
+			} else {
+				comparison++;
 			}
 			if (!found){
-				comparison++;
 				coordlist.clear();
 			}
 			j++;
@@ -274,7 +291,7 @@ void strSearch(vector<vector<char>> *m, vector<vector<short int>> *mcolor, strin
 	}
 
 	auto end = chrono::high_resolution_clock::now();
-	long long diff = chrono::duration_cast<chrono::microseconds>(end - start).count();
+	long long diff = chrono::duration_cast<chrono::nanoseconds>(end - start).count();
 
 	// pake coordlist buat isi mcolor
 	// kode warna ulang2 aja
@@ -285,7 +302,7 @@ void strSearch(vector<vector<char>> *m, vector<vector<short int>> *mcolor, strin
 			mcolor->at(coordlist[i][0]).at(coordlist[i][1]) = color;
 		}
 		cout << *l << " found\n";
-		cout << "Total time: " << diff << " microseconds\n";
+		cout << "Total time: " << diff << " nanoseconds\n";
 		cout << "Total comparison: " << comparison << endl;
 	}
 }
@@ -321,8 +338,8 @@ void wordSearch(vector<vector<char>> *m, vector<string> *l){
 
 	cout << "\nAll search completed.\n";
 	auto endall = chrono::high_resolution_clock::now();
-	long long duration = chrono::duration_cast<chrono::microseconds>(endall - startall).count();
-	cout << "Total time: " << duration << " microseconds\n\n";
+	long long duration = chrono::duration_cast<chrono::nanoseconds>(endall - startall).count();
+	cout << "Total time: " << duration << " nanoseconds\n\n";
 	// print semua warna
 	for(i = 0; i < m->size(); i++){
 		for(j = 0; j < m->at(i).size(); j++){

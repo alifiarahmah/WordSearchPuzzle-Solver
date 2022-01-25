@@ -1,12 +1,10 @@
-/* 
-	Library untuk read file
-*/
+/* readfile.cpp */
+/* Mengambil matriks dan daftar kata dari file .txt dalam folder test */
 
 #include <iostream>
 #include <string.h>
-#include <vector>
-
 #include <fstream>
+#include <vector>
 using namespace std;
 
 vector<char> vectorizeLine(string s){

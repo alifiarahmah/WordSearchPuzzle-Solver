@@ -1,3 +1,6 @@
+/* wordsearch.h */
+/* Header file untuk wordsearch.cpp */
+
 #include <iostream>
 #include <vector>
 #include <string>

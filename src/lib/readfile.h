@@ -1,3 +1,6 @@
+/* readfile.h */
+/* Header file untuk readfile.cpp */
+
 #include <iostream>
 #include <string.h>
 #include <fstream>

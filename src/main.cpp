@@ -1,7 +1,11 @@
+/* main.cpp */
+/* Program utama word-search puzzle solver */
+
 #include <iostream>
 #include <string.h>
 #include <vector>
-#include "lib/lib.h"
+#include "lib/readfile.h"
+#include "lib/wordsearch.h"
 
 using namespace std;
 
@@ -10,10 +14,8 @@ int main(){
 	vector<vector<char>> m;
 	vector<string> wl;
 
-	// isi vector matrix & wordlist
 	cout << "Insert filename (from test folder): ";
 	cin >> filename;
-
 	readFile(&filename, &m, &wl);
 
 	wordSearch(&m, &wl);
