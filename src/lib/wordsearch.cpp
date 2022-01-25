@@ -2,18 +2,178 @@
 #include <vector>
 #include <string>
 #include <chrono>
+
 using namespace std;
+
+// ke atas
+void strMatch1(vector<vector<char>> *m, 
+							vector<vector<int>> *coordlist, 
+							int it, int j, int *lettercount, string *l,
+							bool *found){
+	int i = it;
+	while((!(*found)) && (m->at(i).at(j) == l->at(*lettercount)) && (i >= 0)){
+		(*lettercount)++;
+		coordlist->push_back({i, j});
+		if(*lettercount == l->length()){
+			*found = true;
+		}
+		i--;
+	}
+}
+
+// ke kanan atas
+void strMatch2(vector<vector<char>> *m, 
+							vector<vector<int>> *coordlist, 
+							int it, int jt, int *lettercount, string *l,
+							bool *found){
+	int i = it, j = jt;
+	while((!(*found)) && (m->at(i).at(j) == l->at(*lettercount)) && (i >= 0) && (j < m->at(i).size())){
+		(*lettercount)++;
+		coordlist->push_back({i, j});
+		if(*lettercount == l->length()){
+			*found = true;
+		}
+		i--;
+		j++;
+	}
+}
+
+// ke kanan
+void strMatch3(vector<vector<char>> *m, 
+							vector<vector<int>> *coordlist, 
+							int i, int jt, int *lettercount, string *l,
+							bool *found){
+	int j = jt;
+	while((!(*found)) && (m->at(i).at(j) == l->at(*lettercount)) && (j < m->at(i).size())){
+		(*lettercount)++;
+		coordlist->push_back({i, j});
+		if(*lettercount == l->length()){
+			*found = true;
+		}
+		j++;
+	}
+}
+
+// ke kanan bawah
+void strMatch4(vector<vector<char>> *m, 
+							vector<vector<int>> *coordlist, 
+							int it, int jt, int *lettercount, string *l,
+							bool *found){
+	int i = it, j = jt;
+	while((!(*found)) && (m->at(i).at(j) == l->at(*lettercount)) && (i < m->size()) && (j < m->at(i).size())){
+		(*lettercount)++;
+		coordlist->push_back({i, j});
+		if(*lettercount == l->length()){
+			*found = true;
+		}
+		i++;
+		j++;
+	}
+}
+
+// ke bawah
+void strMatch5(vector<vector<char>> *m, 
+							vector<vector<int>> *coordlist, 
+							int it, int j, int *lettercount, string *l,
+							bool *found){
+	int i = it;
+	while((!(*found)) && (m->at(i).at(j) == l->at(*lettercount)) && (i < m->size())){
+		(*lettercount)++;
+		coordlist->push_back({i, j});
+		if(*lettercount == l->length()){
+			*found = true;
+		}
+		i++;
+	}
+}
+
+// ke kiri bawah
+void strMatch6(vector<vector<char>> *m, 
+							vector<vector<int>> *coordlist, 
+							int it, int jt, int *lettercount, string *l,
+							bool *found){
+	int i = it, j = jt;
+	while(!(*found) && (i >= 0) && (j >= 0)){
+		(*lettercount)++;
+		coordlist->push_back({i, j});
+		if(*lettercount == l->length()){
+			*found = true;
+		}
+		i++;
+		j--;
+	}
+}
+
+// ke kiri
+void strMatch7(vector<vector<char>> *m, 
+							vector<vector<int>> *coordlist, 
+							int i, int jt, int *lettercount, string *l,
+							bool *found){
+	int j = jt;
+	while(!(*found) && (j >= 0)){
+		(*lettercount)++;
+		coordlist->push_back({i, j});
+		if(*lettercount == l->length()){
+			*found = true;
+		}
+		j--;
+	}
+}
+
+// ke kiri atas
+void strMatch8(vector<vector<char>> *m, 
+							vector<vector<int>> *coordlist, 
+							int it, int jt, int *lettercount, string *l,
+							bool *found){
+	int i = it, j = jt;
+	while(!(*found) && (i >= 0) && (j >= 0)){
+		(*lettercount)++;
+		coordlist->push_back({i, j});
+		if(*lettercount == l->length()){
+			*found = true;
+		}
+		i--;
+		j--;
+	}
+}
 
 /* strMatch : Search kelanjutan sesuai direction, berhenti kalo k == l.length ato i/j mentok */
 void strMatch(vector<vector<char>> *m, 
 							vector<vector<int>> *coordlist, 
-							int i, int j, int k, string *l, short int direction,
+							int i, int j, int *lettercount, string *l, short int direction,
 							bool *found){
 
-	if(!found){
-		
+	// buat ngebungkus, fungsi cuma dijalanin kalo belom ketemu aja
+	if(!(*found)){
+		cout << "Finding remaining chars at direction " << direction << endl;
+		switch(direction){
+			case 1:
+				strMatch1(m, coordlist, i, j, lettercount, l, found);
+				break;
+			case 2:
+				strMatch2(m, coordlist, i, j, lettercount, l, found);
+				break;
+			case 3:
+				strMatch3(m, coordlist, i, j, lettercount, l, found);
+				break;
+			case 4:
+				strMatch4(m, coordlist, i, j, lettercount, l, found);
+				break;
+			case 5:
+				strMatch5(m, coordlist, i, j, lettercount, l, found);
+				break;
+			case 6:
+				strMatch6(m, coordlist, i, j, lettercount, l, found);
+				break;
+			case 7:
+				strMatch7(m, coordlist, i, j, lettercount, l, found);
+				break;
+			case 8:
+				strMatch8(m, coordlist, i, j, lettercount, l, found);
+				break;
+		}
 
-		if(!found){
+		if(!found){ // kalo dari 8 arah belom ketemu full kata
 			coordlist->clear();
 			direction = -1;
 		}
@@ -22,106 +182,117 @@ void strMatch(vector<vector<char>> *m,
 }
 
 /* strSearch : Search per kata, kalo found diwarnain */
-void strSearch(vector<vector<char>> *m, vector<vector<short int>> *mcolor, string *l){
+void strSearch(vector<vector<char>> *m, vector<vector<short int>> *mcolor, string *l, int idx){
 	int i = 0, j, lettercount = 0, comparison = 0;
 	short int direction = -1;
 	bool found = false;
-	vector<vector<int>> coordlist;
-	auto startsearch = chrono::high_resolution_clock::now();
+	vector<vector<int>> coordlist; // list koordinat masing2 huruf dalam 1 kata yg lagi dicari
 
-	// cari huruf pertama (sequential search) habis itu rekursi
+	auto start = chrono::high_resolution_clock::now();
+
+	// cari huruf pertama (sequential search)
 	while(!found && (i < m->size())){
 		j = 0;
 		while(!found && (j < m->at(i).size())){
 			if (m->at(i).at(j) == l->at(0)){ // kalo ketemu huruf pertama
+				cout << l->at(0) << " found at (" << i << "," << j << ")\n";
 
-				lettercount++;
+				lettercount=1;
 				coordlist.push_back({i, j});
 				if(lettercount == l->length()){
-					found = true; // kalo cuma 1
+					found = true; // kalo cuma 1 huruf
 				} else {
-					// cari huruf kedua ke sekitaran huruf pertama, tentuin direction
+					// cari huruf kedua di 8 arah
 					if (i > 0){
 						if (m->at(i-1).at(j) == l->at(1)){
 							direction = 1; // atas
-							strMatch(m, &coordlist, i, j, lettercount, l, direction, &found);
+							strMatch(m, &coordlist, i-1, j, &lettercount, l, direction, &found);
 						}
 						if (j < m->at(i).size()-1){
 							if (m->at(i-1).at(j+1) == l->at(1)){
 								direction = 2; // kanan atas
-								strMatch(m, &coordlist, i, j, lettercount, l, direction, &found);
+								strMatch(m, &coordlist, i-1, j+1, &lettercount, l, direction, &found);
 							}
 						}
 						if (j > 0){
 							if (m->at(i-1).at(j-1) == l->at(1)){
 								direction = 8; // kiri atas
-								strMatch(m, &coordlist, i, j, lettercount, l, direction, &found);
+								strMatch(m, &coordlist, i-1, j-1, &lettercount, l, direction, &found);
 							}
 						}
 					}
 					if (i < m->size()-1){
 						if (m->at(i+1).at(j) == l->at(1)){
 							direction = 5; // bawah
-							strMatch(m, &coordlist, i, j, lettercount, l, direction, &found);
+							strMatch(m, &coordlist, i+1, j, &lettercount, l, direction, &found);
 						}
 						if (j < m->at(i).size()-1){
 							if (m->at(i+1).at(j+1) == l->at(1)){
 								direction = 4; // kanan bawah
-								strMatch(m, &coordlist, i, j, lettercount, l, direction, &found);
+								strMatch(m, &coordlist, i+1, j+1, &lettercount, l, direction, &found);
 							}
 						}
 						if (j > 0){
 							if (m->at(i+1).at(j-1) == l->at(1)){
 								direction = 6; // kiri bawah
-								strMatch(m, &coordlist, i, j, lettercount, l, direction, &found);
+								strMatch(m, &coordlist, i+1, j-1, &lettercount, l, direction, &found);
 							}
 						}
 					} 
 					if (j > 0){
 						if (m->at(i).at(j-1) == l->at(1)){
 							direction = 7; // kiri
-							strMatch(m, &coordlist, i, j, lettercount, l, direction, &found);
+							strMatch(m, &coordlist, i, j-1, &lettercount, l, direction, &found);
 						}
 					} 
 					if (j < m->at(i).size()-1){
 						if (m->at(i).at(j+1) == l->at(1)){
 							direction = 3; // kanan
-							strMatch(m, &coordlist, i, j, lettercount, l, direction, &found);
+							strMatch(m, &coordlist, i, j+1, &lettercount, l, direction, &found);
 						}
 					}
 				}
 
 			}
-			if (!found) comparison++;
+			if (!found){
+				comparison++;
+				coordlist.clear();
+			}
 			j++;
 		}
 		i++;
 	}
 
+	auto end = chrono::high_resolution_clock::now();
+	long long diff = chrono::duration_cast<chrono::microseconds>(end - start).count();
+
 	// pake coordlist buat isi mcolor
 	// kode warna ulang2 aja
 	if (found) {
+		int color = 30 + idx;
 
-	}
 
-	auto endsearch = chrono::high_resolution_clock::now();
-	auto diff = endsearch - startsearch;
-	long long duration = chrono::duration_cast<chrono::nanoseconds>(diff).count();
-	if(found){
+		for(i = 0; i < coordlist.size(); i++){
+			mcolor->at(coordlist[i][0]).at(coordlist[i][1]) = color;
+		}
 		cout << *l << " found\n";
-		cout << "Search time: " << duration << "ns\n";
+		cout << "Total time: " << diff << " microseconds\n";
 		cout << "Total comparison: " << comparison << endl;
 	}
+}
+
+void print_color(char s, short int x){
+	cout << "\033[" << x << "m" << s << "\033[0m";
 }
 
 // fungsi utama yang dipanggil dari main
 // search masing2 kata dalam l, print ulang pake mcolor, tulis keseluruhan waktu
 void wordSearch(vector<vector<char>> *m, vector<string> *l){
 	int i, j;
-
-	// inisialisasi mcolor
 	vector<vector<short int>> mcolor;
 	vector<short int> x;
+
+	// inisialisasi mcolor
 	for(i = 0; i < m->size(); i++){
 		for(j = 0; j < m->at(i).size(); j++){
 			x.push_back(0);
@@ -135,17 +306,22 @@ void wordSearch(vector<vector<char>> *m, vector<string> *l){
 	
 	// cari semua kata + taroh kode2 warna di mcolor
 	for(i = 0; i < l->size(); i++){
-		cout << "\nSearching for " << l->at(i) << "...\n";
-		strSearch(m, &mcolor, &(l->at(i))); // search tiap string di matriks
+		cout << "\nSearching for " << l->at(i) << "..." << endl;
+		strSearch(m, &mcolor, &(l->at(i)), i); // search tiap string di matriks
 	}
-
-	// tulis keseluruhan mcolor + warna
 
 	cout << "\nAll search completed.\n";
 	auto endall = chrono::high_resolution_clock::now();
-	auto diff = endall - startall;
-	long long duration = chrono::duration_cast<chrono::microseconds>(diff).count();
-	cout << "Total time: " << duration/1000 << "ms\n";
-
+	long long duration = chrono::duration_cast<chrono::microseconds>(endall - startall).count();
+	cout << "Total time: " << duration << " microseconds\n\n";
 	// print semua warna
+	for(i = 0; i < m->size(); i++){
+		for(j = 0; j < m->at(i).size(); j++){
+			print_color(m->at(i).at(j), mcolor.at(i).at(j));
+			if(j != m->at(i).size()-1){
+				cout << " ";
+			}
+		}
+		cout << "\n";
+	}
 }

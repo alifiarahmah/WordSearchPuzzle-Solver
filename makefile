@@ -1,7 +1,7 @@
 CC=g++
-TARGET=.\main.exe
-SRC=$(wildcard main.cpp) \
-		$(wildcard lib\*.cpp) \
+TARGET=bin\main.exe
+SRC=$(wildcard src\main.cpp) \
+		$(wildcard src\lib\*.cpp) \
 
 .SILENT:all
 
