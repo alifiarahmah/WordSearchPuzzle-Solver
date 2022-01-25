@@ -18,6 +18,7 @@ void strMatch1(vector<vector<char>> *m,
 			*found = true;
 		}
 		i--;
+		if (i < 0) break;
 	}
 }
 
@@ -35,6 +36,8 @@ void strMatch2(vector<vector<char>> *m,
 		}
 		i--;
 		j++;
+		if (i < 0) break;
+		if (j == m->at(i).size()) break;
 	}
 }
 
@@ -51,6 +54,7 @@ void strMatch3(vector<vector<char>> *m,
 			*found = true;
 		}
 		j++;
+		if (j == m->at(i).size()) break;
 	}
 }
 
@@ -68,6 +72,8 @@ void strMatch4(vector<vector<char>> *m,
 		}
 		i++;
 		j++;
+		if (i == m->size()) break;
+		if (j == m->at(i).size()) break;
 	}
 }
 
@@ -84,6 +90,7 @@ void strMatch5(vector<vector<char>> *m,
 			*found = true;
 		}
 		i++;
+		if (i == m->size()) break;
 	}
 }
 
@@ -101,6 +108,8 @@ void strMatch6(vector<vector<char>> *m,
 		}
 		i++;
 		j--;
+		if (i == m->size()) break;
+		if (j < 0) break;
 	}
 }
 
@@ -117,6 +126,7 @@ void strMatch7(vector<vector<char>> *m,
 			*found = true;
 		}
 		j--;
+		if (j < 0) break;
 	}
 }
 
@@ -134,6 +144,8 @@ void strMatch8(vector<vector<char>> *m,
 		}
 		i--;
 		j--;
+		if (i < 0) break;
+		if (j < 0) break;
 	}
 }
 
@@ -145,7 +157,6 @@ void strMatch(vector<vector<char>> *m,
 
 	// buat ngebungkus, fungsi cuma dijalanin kalo belom ketemu aja
 	if(!(*found)){
-		cout << "Finding remaining chars at direction " << direction << endl;
 		switch(direction){
 			case 1:
 				strMatch1(m, coordlist, i, j, lettercount, l, found);
@@ -173,7 +184,7 @@ void strMatch(vector<vector<char>> *m,
 				break;
 		}
 
-		if(!found){ // kalo dari 8 arah belom ketemu full kata
+		if(!(*found)){ // kalo dari 8 arah belom ketemu full kata
 			coordlist->clear();
 			direction = -1;
 		}
@@ -195,7 +206,6 @@ void strSearch(vector<vector<char>> *m, vector<vector<short int>> *mcolor, strin
 		j = 0;
 		while(!found && (j < m->at(i).size())){
 			if (m->at(i).at(j) == l->at(0)){ // kalo ketemu huruf pertama
-				cout << l->at(0) << " found at (" << i << "," << j << ")\n";
 
 				lettercount=1;
 				coordlist.push_back({i, j});
@@ -269,8 +279,7 @@ void strSearch(vector<vector<char>> *m, vector<vector<short int>> *mcolor, strin
 	// pake coordlist buat isi mcolor
 	// kode warna ulang2 aja
 	if (found) {
-		int color = 30 + idx;
-
+		int color = 31 + (idx % 6);
 
 		for(i = 0; i < coordlist.size(); i++){
 			mcolor->at(coordlist[i][0]).at(coordlist[i][1]) = color;
