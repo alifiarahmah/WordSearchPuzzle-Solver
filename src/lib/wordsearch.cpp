@@ -301,9 +301,9 @@ void strSearch(vector<vector<char>> *m, vector<vector<short int>> *mcolor, strin
 		for(i = 0; i < coordlist.size(); i++){
 			mcolor->at(coordlist[i][0]).at(coordlist[i][1]) = color;
 		}
-		cout << *l << " found\n";
-		cout << "Total time: " << diff << " nanoseconds\n";
-		cout << "Total comparison: " << comparison << endl;
+		cout << *l << " found. (";
+		cout << "Total time: " << diff << " nanoseconds, ";
+		cout << "Total comparison: " << comparison << ")\n";
 	}
 }
 
@@ -332,7 +332,6 @@ void wordSearch(vector<vector<char>> *m, vector<string> *l){
 	
 	// cari semua kata + taroh kode2 warna di mcolor
 	for(i = 0; i < l->size(); i++){
-		cout << "\nSearching for " << l->at(i) << "..." << endl;
 		strSearch(m, &mcolor, &(l->at(i)), i); // search tiap string di matriks
 	}
 
